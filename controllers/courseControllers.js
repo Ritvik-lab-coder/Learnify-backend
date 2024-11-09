@@ -450,13 +450,13 @@ export const uploadContentController = async (request, response) => {
         }
 
         // Upload video to cloud and get URL
-        const { public_id, url } = await uploadOnCloud(content.tempFilePath);
+        const { public_id, secure_url } = await uploadOnCloud(content.tempFilePath);
         console.log("public_id, url", public_id, url);
 
         // Update the specific roadmap item to add the video URL
         const updatedCourse = await CourseModel.updateOne(
             { _id: courseId, "roadmap._id": roadmapId },
-            { $push: { "roadmap.$.links": url } }
+            { $push: { "roadmap.$.links": secure_url } }
         );
 
         if (updatedCourse.nModified === 0) {
